@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -9,7 +10,7 @@ using Xamarin.Forms.Internals;
 namespace Xamarin.Forms
 {
 	[ContentProperty("Children")]
-	public abstract class Layout<T> : Layout, IViewContainer<T> where T : View
+	public abstract class Layout<T> : Layout, IViewContainer, IViewContainer<T> where T : View
 	{
 		readonly ElementCollection<T> _children;
 
@@ -21,6 +22,11 @@ namespace Xamarin.Forms
 		public new IList<T> Children
 		{
 			get { return _children; }
+		}
+
+		IList IViewContainer.Children
+		{
+			get { return base.InternalChildren; }
 		}
 
 		protected virtual void OnAdded(T view)
